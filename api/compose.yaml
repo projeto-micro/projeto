@@ -14,6 +14,11 @@ services:
       POSTGRES_USER: ${DB_USER:-store}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-devpass}
       POSTGRES_DB: ${DB_NAME:-store}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-store} -d ${DB_NAME:-store}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   account:
     build:
@@ -29,7 +34,9 @@ services:
     deploy:
       replicas: 1
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: on-failure
 
   auth:
     build:
