@@ -208,3 +208,11 @@ __marimo__/
 
 volume/
 config/
+
+# Docker/Grafana runtime state. Keep only provisioning files.
+api/volume/
+api/setup/grafana/*
+!api/setup/grafana/provisioning/
+!api/setup/grafana/provisioning/**
+!api/setup/grafana/provisioning/datasources/
+!api/setup/grafana/provisioning/datasources/datasources.yml
