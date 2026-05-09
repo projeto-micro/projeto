@@ -1,0 +1,19 @@
+scrape_configs:
+
+  - job_name: 'GatewayMetrics'
+    metrics_path: '/gateway/actuator/prometheus'
+    scrape_interval: 1s
+    static_configs:
+      - targets:
+        - gateway:8080
+        labels:
+          application: 'Gateway Application'
+
+  - job_name: 'ExchangeMetrics'
+    metrics_path: '/metrics'
+    scrape_interval: 1s
+    static_configs:
+      - targets:
+        - exchange:8080
+        labels:
+          application: 'Exchange Application'
