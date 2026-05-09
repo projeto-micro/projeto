@@ -1,0 +1,21 @@
+[submodule "api/account"]
+	path = api/account
+	url = https://github.com/projeto-micro/projeto-exchange.account.git
+[submodule "api/account-service"]
+	path = api/account-service
+	url = https://github.com/projeto-micro/projeto-exchange.account-service.git
+[submodule "api/auth"]
+	path = api/auth
+	url = https://github.com/projeto-micro/projeto-exchange.auth.git
+[submodule "api/auth-service"]
+	path = api/auth-service
+	url = https://github.com/projeto-micro/projeto-exchange.auth-service.git
+[submodule "api/gateway-service"]
+	path = api/gateway-service
+	url = https://github.com/projeto-micro/projeto-exchange.gateway-service.git
+[submodule "api/exchange-service"]
+	path = api/exchange-service
+	url = https://github.com/projeto-micro/projeto-exchange.exchange-service.git
+[submodule "web/site"]
+	path = web/site
+	url = https://github.com/projeto-micro/projeto-exchange.site.git
