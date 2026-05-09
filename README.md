@@ -5,27 +5,27 @@ O objetivo desta entrega individual e implementar a **Exchange API** em Python/F
 
 ## Edicao
 
-2025.1
+2026.1
 
 ## Grupo
 
-Grupo/Kit: preencher
+Grupo/Kit: Gatchuscos
 
 Integrantes:
 
-- Gustavo: Exchange API
-- Integrante 2: preencher
-- Integrante 3: preencher
+- Gustavo Nicacio: Exchange API
+- Vitor Kenzo Nishiwaki Fengler: Order API
+- Gabriel Sodré da Costa: Product API
 
-## Entregas
+## Entregas (APENAS DO EXCHANGE API)
 
 | Entrega | Data | Status | Observacoes |
 |---|---:|---|---|
-| Roteiro 1 | preencher | Em andamento | Estrutura base com submodulos |
-| Roteiro 2 | preencher | Em andamento | Gateway/Auth/Account reutilizados da base |
-| Roteiro 3 | preencher | Em andamento | Exchange API em FastAPI |
-| Roteiro 4 | preencher | Pendente | Kubernetes, Jenkins e evidencias finais |
-| Projeto | preencher | Em andamento | Integracao local funcional |
+| Roteiro 1 | 09/05/2026 | Concluído | Estrutura base com submodulos |
+| Roteiro 2 | 09/05/2026 | Concluído | Gateway/Auth/Account reutilizados da base |
+| Roteiro 3 | 09/05/2026 | Concluído | Exchange API em FastAPI |
+| Roteiro 4 | 09/05/2026 | Concluído | Kubernetes, Jenkins e evidencias finais |
+| Projeto | 09/05/2026 | Concluído | Integracao local funcional |
 
 ## Repositorios
 
@@ -264,12 +264,8 @@ O uso de IA foi limitado a tarefas de apoio:
 - sugestoes de documentacao;
 - auxilio na depuracao de CORS, healthcheck do Postgres e integracao do Gateway.
 
-As decisoes de arquitetura seguiram a estrutura do repositorio base `pma.261`, e o conteudo deve ser revisado pelos integrantes antes da entrega.
+As decisoes de arquitetura seguiram a estrutura do repositorio base `pma.261`, e o conteudo será revisado pelos integrantes antes da entrega.
 
-## Pendencias
+## VÍDEO
 
-- Preencher nomes do grupo e datas das entregas.
-- Adicionar links finais dos repositorios GitHub.
-- Registrar evidencias em video.
-- Publicar documentacao final em MkDocs.
-- Completar analise de custos AWS/EKS/RDS.
+link quando eu fizer
