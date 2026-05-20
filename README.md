@@ -14,8 +14,8 @@ Grupo/Kit: Gatchuscos
 Integrantes:
 
 - Gustavo Nicacio: Exchange API
-- Vitor Kenzo Nishiwaki Fengler: Order API
-- Gabriel Sodré da Costa: Product API
+- Vitor Kenzo Nishiwaki Fengler: Product API
+- Gabriel Sodré da Costa: Order API
 
 ## Entregas (APENAS DO EXCHANGE API)
 
