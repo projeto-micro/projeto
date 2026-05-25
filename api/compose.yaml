@@ -54,6 +54,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
   auth:
     build:
       context: ./auth-service
@@ -79,6 +80,28 @@ services:
     deploy:
       replicas: 1
 
+  order:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    hostname: order
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${DB_USER:-store}:${DB_PASSWORD:-devpass}@db:5432/${DB_NAME:-store}
+      PRODUCT_SERVICE_URL: http://product:8080/products/{id_product}
+      EXCHANGE_SERVICE_URL: http://exchange:8080/exchanges/{from_currency}/{to_currency}
+      PRODUCT_REQUEST_TIMEOUT_SECONDS: ${PRODUCT_REQUEST_TIMEOUT_SECONDS:-5}
+      EXCHANGE_REQUEST_TIMEOUT_SECONDS: ${EXCHANGE_REQUEST_TIMEOUT_SECONDS:-5}
+      EXCHANGE_CACHE_TTL_SECONDS: ${EXCHANGE_CACHE_TTL_SECONDS:-60}
+    deploy:
+      replicas: 1
+    depends_on:
+      db:
+        condition: service_healthy
+      product:
+        condition: service_started
+      exchange:
+        condition: service_started
+
   gateway:
     build:
       context: ./gateway-service
@@ -93,6 +116,8 @@ services:
       - auth
       - account
       - exchange
+      - product
+      - order
 
   prometheus:
     image: prom/prometheus:latest
@@ -100,18 +125,18 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./volume/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${SETUP}/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
-    image: grafana/grafana-enterprise
+    image: grafana/grafana:latest
     hostname: grafana
     ports:
       - 3000:3000
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
-      - ./volume/grafana:/var/lib/grafana
-      - ./volume/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources      
+      - ${SETUP}/grafana:/var/lib/grafana
+      - ${SETUP}/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     restart: always
     depends_on:
       - prometheus
