@@ -1,56 +1,61 @@
-# Projeto Exchange Store
+# Projeto Microservice
 
-## Grupo
+Bem-vindo à documentação do **Store API**, um sistema de e-commerce construído com arquitetura de microserviços usando Spring Boot.
 
-Grupo: Gatchuscos
+## Visão Geral
 
-Integrantes:
+O projeto é composto por serviços independentes que se comunicam via HTTP, orquestrados por um API Gateway e containerizados com Docker.
 
-- Gustavo Nicacio: Exchange API
-- Vitor Kenzo Nishiwaki Fengler: Product API
-- Gabriel Sodre da Costa: Order API
+## Serviços
 
-## Objetivo
+| Serviço | Porta interna | Descrição |
+|---|---|---|
+| `gateway-service` | 8080 | Ponto de entrada único, roteamento e CORS |
+| `auth-service` | 8080 | Autenticação JWT |
+| `account-service` | 8080 | Gestão de usuários |
+| `product-service` | 8082 | Catálogo de produtos |
+| `exchange-service` | 8080 | Conversão de moedas |
 
-Aplicacao web de compra e venda de produtos baseada em microservicos. O projeto integra Gateway, Auth, Account, Product, Order e Exchange, com banco PostgreSQL, observabilidade, CI/CD e manifests Kubernetes.
+## Como rodar
 
-## Repositorios
+### Pré-requisitos
 
-| Repositorio | Papel |
-| --- | --- |
-| projeto-exchange | Repositorio principal com submodules |
-| account | Contratos Java de Account |
-| account-service | Cadastro e gerenciamento de contas |
-| auth | Contratos Java de Auth |
-| auth-service | Registro, login e JWT |
-| gateway-service | API Gateway e camada confiavel |
-| exchange-service | Cotacao de moedas em Python/FastAPI |
-| product | Contratos Java de Product |
-| product-service | Cadastro e consulta de produtos |
-| order-service | Criacao e consulta de pedidos |
-| site | Frontend estatico |
+- Docker e Docker Compose instalados
+- Maven (para compilar os serviços localmente)
 
-## Como rodar localmente
+### Configuração
 
-Backend:
+Crie um arquivo `.env` na pasta `api/` com base no `.env.example`:
 
-```powershell
-cd api
-docker compose up -d --build
+```dotenv
+VOLUME_DB=./volume/db
+DB_USER=root
+DB_PASSWORD=sua_senha
+DB_NAME=store
+CORS_ALLOWED_ORIGINS=http://localhost,http://localhost:80
+CORS_ALLOWED_CREDENTIALS=true
+JWT_SECRET_KEY=sua_chave_jwt
+JWT_HTTP_ONLY=true
 ```
 
-Frontend:
+### Subindo o ambiente
 
-```powershell
-cd web
-docker compose up -d
+```bash
+docker compose up --build -d
 ```
 
-URLs:
+### Derrubando o ambiente
 
-| Servico | URL |
-| --- | --- |
-| Site | http://localhost:8088 |
-| Gateway | http://localhost:8080 |
-| Prometheus | http://localhost:9090 |
-| Grafana | http://localhost:3000 |
+```bash
+docker compose down -v
+```
+
+## Tecnologias
+
+- **Java 25** + **Spring Boot 4**
+- **PostgreSQL 17**
+- **Flyway** — migrations de banco
+- **Spring Cloud Gateway** — roteamento
+- **JWT** — autenticação stateless
+- **Docker Compose** — orquestração local
+- **Prometheus + Grafana** — observabilidade
