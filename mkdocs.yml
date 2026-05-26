@@ -119,7 +119,5 @@ nav:
     - AWS: infraestrutura/aws.md
     - EKS: infraestrutura/eks.md
     - CI/CD: infraestrutura/cicd.md
-  - Testes de Carga: load-testing.md
   - Bottlenecks: bottlenecks.md
-  - Custos & SLA: costs.md
   - PaaS: paas.md
