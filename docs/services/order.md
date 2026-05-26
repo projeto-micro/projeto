@@ -1,5 +1,7 @@
 # Order API
 
+**Responsável** -> Gabriel Sodré
+
 Microservico Python/FastAPI responsavel pela criacao e consulta de pedidos.
 
 ## Responsabilidades
