@@ -1,42 +1,112 @@
 # Exchange API
 
-Microservico em Python/FastAPI responsavel por buscar cotacoes entre moedas.
+**Responsável** -> Gustavo Nicacio
 
-## Endpoint principal
+Serviço responsável pela conversão de moedas entre pares de divisas.
 
-```http
-GET /exchanges/{from}/{to}
-```
+- **Linguagem:** Python + FastAPI
+- **Porta interna:** `8080`
+- **Base path via gateway:** `/exchanges`
 
-Exemplo:
+## Configuração
 
-```http
-GET /exchanges/USD/BRL
-```
+| Variável | Padrão | Descrição |
+|---|---|---|
+| `EXCHANGE_PROVIDER_URL` | `https://economia.awesomeapi.com.br/json/last/{from_currency}-{to_currency}` | URL do provedor externo |
+| `EXCHANGE_CACHE_TTL_SECONDS` | `60` | Tempo de cache da cotação em segundos |
+| `EXCHANGE_REQUEST_TIMEOUT_SECONDS` | `5` | Timeout da requisição ao provedor |
 
-Resposta:
+## Endpoints
 
+### `GET /exchanges/{from_currency}/{to_currency}` — Converter moeda
+
+Retorna a cotação entre dois pares de moeda. Requer o header `id-account` com o ID do usuário autenticado.
+
+**Headers obrigatórios:**
+
+| Header | Descrição |
+|---|---|
+| `id-account` | ID da conta do usuário autenticado |
+
+**Path params:**
+
+| Param | Descrição | Exemplo |
+|---|---|---|
+| `from_currency` | Moeda de origem (ISO 3 letras) | `USD` |
+| `to_currency` | Moeda de destino (ISO 3 letras) | `BRL` |
+
+**Exemplo:** `GET /exchanges/USD/BRL`
+
+**Resposta:** `200 OK`
 ```json
 {
-  "sell": 5.71,
-  "buy": 5.70,
-  "date": "2026-05-09 14:23:42",
-  "id-account": "0195ae95-5be7-7dd3-b35d-7a7d87c404fb"
+  "sell": 5.87,
+  "buy": 5.85,
+  "date": "2024-01-15 10:30:00",
+  "id-account": "uuid-da-conta"
 }
 ```
 
-## Requisitos atendidos
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `sell` | `float` | Preço de venda (ask) |
+| `buy` | `float` | Preço de compra (bid) |
+| `date` | `string` | Data da cotação |
+| `id-account` | `string` | ID da conta que fez a consulta |
 
-- Implementado em Python.
-- Usa FastAPI.
-- Consome servico externo de cotacao.
-- Exige usuario autenticado via Gateway.
-- Usa cache em memoria com TTL para reduzir chamadas repetidas.
-- Expoe metricas para Prometheus.
+**Caso especial:** se `from_currency == to_currency`, retorna `sell: 1.0` e `buy: 1.0` sem chamar o provedor.
 
-## Evidencias tecnicas
+---
 
-- Codigo: `api/exchange-service`
-- Dockerfile: `api/exchange-service/Dockerfile`
-- Jenkinsfile: `api/exchange-service/Jenkinsfile`
-- Kubernetes: `api/exchange-service/k8s/k8s.yaml`
+### `GET /health-check` — Health check
+
+**Resposta:** `200 OK`
+```json
+{ "status": "ok" }
+```
+
+---
+
+### `GET /info` — Informações do serviço
+
+**Resposta:** `200 OK`
+```json
+{
+  "application": "exchange-service",
+  "framework": "FastAPI",
+  "status": "running"
+}
+```
+
+---
+
+### `GET /metrics` — Métricas Prometheus
+
+Expõe métricas no formato Prometheus para coleta pelo servidor de monitoramento.
+
+## Cache
+
+As cotações são cacheadas **em memória** por `EXCHANGE_CACHE_TTL_SECONDS` segundos (padrão: 60s). Isso reduz chamadas ao provedor externo e melhora a latência.
+
+```mermaid
+flowchart TD
+    Req[Requisição] --> Cache{Cache válido?}
+    Cache -->|Sim| Return[Retorna do cache]
+    Cache -->|Não| Provider[Chama AwesomeAPI]
+    Provider --> Store[Salva no cache]
+    Store --> Return
+```
+
+## Validações e erros
+
+| Situação | Status |
+|---|---|
+| Código de moeda inválido (não são 3 letras) | `400 Bad Request` |
+| Par de moedas não encontrado no provedor | `404 Not Found` |
+| Provedor externo recusou a requisição | `502 Bad Gateway` |
+| Provedor externo indisponível ou timeout | `502 Bad Gateway` |
+| Payload inválido retornado pelo provedor | `502 Bad Gateway` |
+
+## Provedor externo
+
+O serviço consome a [AwesomeAPI](https://economia.awesomeapi.com.br) para obter cotações em tempo real. A URL do provedor é configurável via variável de ambiente, permitindo trocar a fonte sem alterar o código.
