@@ -1,32 +1,46 @@
 # AWS
 
-## Objetivo
+A infraestrutura de produção do projeto é hospedada na AWS, com o pipeline de CI/CD gerenciado pelo Jenkins integrado ao EKS e ao Docker Hub.
 
-Preparar a conta AWS usada para hospedar a aplicacao no EKS e registrar as evidencias da configuracao.
+## Serviços utilizados
 
-## Roadmap da configuracao
+| Serviço | Uso |
+|---|---|
+| **EKS** | Orquestração dos microserviços em produção |
+| **EC2** | Nodes do cluster EKS + servidor Jenkins |
+| **Docker Hub** | Registro das imagens Docker (público) |
 
-1. Criar ou acessar a conta AWS do grupo.
-2. Criar usuario IAM para o projeto.
-3. Criar access key para uso local e no Jenkins.
-4. Instalar e configurar AWS CLI.
-5. Validar acesso com `aws sts get-caller-identity`.
+## Fluxo de deploy
 
-## Comandos de apoio
-
-```bash
-aws configure
-aws sts get-caller-identity
-aws configure list
+```mermaid
+graph LR
+    Dev[Desenvolvedor] -->|Push| GitHub
+    GitHub -->|Trigger| Jenkins
+    Jenkins -->|Build + Push| DockerHub[(Docker Hub)]
+    Jenkins -->|kubectl apply| EKS[AWS EKS]
+    EKS -->|Pull imagem| DockerHub
 ```
 
-## Evidencias para entrega
+## Ambiente de produção vs desenvolvimento
 
-- Print do usuario IAM sem expor secrets.
-- Print ou saida do `aws sts get-caller-identity`.
-- Regiao escolhida para o projeto.
-- Politicas anexadas ao usuario ou role do projeto.
+| Aspecto | Desenvolvimento | Produção |
+|---|---|---|
+| Orquestração | Docker Compose | Kubernetes (EKS) |
+| Banco de dados | PostgreSQL local | PostgreSQL no K8s |
+| Imagens | Build local | Docker Hub (`latest` + `BUILD_ID`) |
+| Configurações | `.env` | ConfigMap + Secrets K8s |
+| Plataformas | Nativa da máquina | `linux/amd64` + `linux/arm64` |
 
-## Observacao de seguranca
+## Compose de produção
 
-Access keys nao devem ser commitadas. No Jenkins, as credenciais devem ser cadastradas no gerenciador de credenciais e consumidas por `withCredentials`.
+O arquivo `compose.prod.yaml` permite rodar o ambiente de produção usando as imagens já publicadas no Docker Hub, sem precisar compilar o código:
+
+```bash
+docker compose -f compose.prod.yaml up -d
+```
+
+Serviços disponíveis no compose de produção:
+
+- `db` — PostgreSQL 18
+- `account` — `humbertosandmann/account:latest`
+- `exchange` — `projetomicro/exchange:latest`
