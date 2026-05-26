@@ -2,6 +2,8 @@
 
 **Responsável** -> Gustavo Nicacio
 
+**Repositório**: https://github.com/projeto-micro/projeto-exchange.exchange-service.git
+
 Serviço responsável pela conversão de moedas entre pares de divisas.
 
 - **Linguagem:** Python + FastAPI

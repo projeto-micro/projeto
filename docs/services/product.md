@@ -2,6 +2,8 @@
 
 **Responsável** -> Vitor Fengler
 
+**Repositórios**: https://github.com/projeto-micro/product.git e https://github.com/projeto-micro/product-service.git
+
 Serviço responsável pelo catálogo de produtos da loja.
 
 - **Porta interna:** `8082`

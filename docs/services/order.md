@@ -2,6 +2,8 @@
 
 **Responsável** -> Gabriel Sodré
 
+**Repositório**: https://github.com/projeto-micro/projeto-order.order-service.git
+
 Microservico Python/FastAPI responsavel pela criacao e consulta de pedidos.
 
 ## Responsabilidades
