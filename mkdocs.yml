@@ -1,8 +1,8 @@
-site_name: Projeto Exchange Store
+site_name: Store Project
 site_author: Gustavo Nicacio, Gabriel Sodre, Vitor Fengler
 site_url: https://projeto-micro.github.io/projeto
-repo_url: https://github.com/projeto-micro/projet
-repo_name: projeto-micro/projeto-exchange
+repo_url: https://github.com/projeto-micro/projeto
+repo_name: projeto-micro/projeto
 use_directory_urls: false
 
 theme:
