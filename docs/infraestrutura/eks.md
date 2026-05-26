@@ -1,54 +1,86 @@
 # EKS
 
-## Objetivo
+O projeto tem suporte a deploy no Kubernetes, com manifests já escritos para o `exchange-service` e o `postgres-service`.
 
-Executar todos os microservicos no mesmo cluster Kubernetes gerenciado pela AWS.
+## Estrutura dos manifests
 
-## Recursos Kubernetes do projeto
+Cada serviço que suporta K8s tem uma pasta `k8s/` com os seguintes recursos:
 
-| Servico | Manifesto |
-| --- | --- |
-| Postgres | `api/postgres-service/k8s/*.yaml` |
-| Account | `api/account-service/k8s/k8s.yaml` |
-| Auth | `api/auth-service/k8s/k8s.yaml` |
-| Gateway | `api/gateway-service/k8s/k8s.yaml` |
-| Exchange | `api/exchange-service/k8s/k8s.yaml` |
-| Product | `api/product-service/k8s/k8s.yaml` |
-| Order | `api/order-service/k8s/k8s.yaml` |
-
-Cada microservico possui:
-
-- `ConfigMap`
-- `Secret`
-- `Deployment`
-- `Service`
-
-## Aplicando no cluster
-
-```bash
-kubectl apply -f api/postgres-service/k8s/
-kubectl apply -f api/account-service/k8s/k8s.yaml
-kubectl apply -f api/auth-service/k8s/k8s.yaml
-kubectl apply -f api/exchange-service/k8s/k8s.yaml
-kubectl apply -f api/product-service/k8s/k8s.yaml
-kubectl apply -f api/order-service/k8s/k8s.yaml
-kubectl apply -f api/gateway-service/k8s/k8s.yaml
+```
+k8s/
+├── k8s.yaml        # ConfigMap + Secret + Deployment + Service (em um arquivo só)
 ```
 
-## Validacao
-
-```bash
-kubectl get pods
-kubectl get services
-kubectl logs deploy/gateway
-kubectl logs deploy/exchange
+O PostgreSQL é separado em arquivos individuais:
+```
+postgres-service/k8s/
+├── configmap.yaml
+├── secrets.yaml
+├── deployment.yaml
+└── service.yaml
 ```
 
-O `gateway` usa `Service` do tipo `LoadBalancer`, expondo a aplicacao para os testes externos.
+## PostgreSQL no Kubernetes
 
-## Evidencias para entrega
+**ConfigMap** — configurações não sensíveis:
+```yaml
+POSTGRES_HOST:
+POSTGRES_DB:
+```
 
-- Print de `kubectl get pods`.
-- Print de `kubectl get services`.
-- DNS ou endpoint externo do LoadBalancer do Gateway.
-- Video curto mostrando a aplicacao respondendo pelo endpoint do cluster.
+**Secret** — credenciais (base64):
+```yaml
+POSTGRES_USER:
+POSTGRES_PASSWORD: 
+```
+
+**Deployment:**
+
+| Campo | Valor |
+|---|---|
+| Imagem | `postgres:latest` |
+| Porta | `5432` |
+| CPU request/limit | `250m` / `500m` |
+| Memória request/limit | `256Mi` / `512Mi` |
+
+**Service:** `ClusterIP` na porta `5432` — acessível internamente como `postgres:5432`.
+
+## Exchange Service no Kubernetes
+
+**ConfigMap:**
+
+| Variável | Valor padrão |
+|---|---|
+| `EXCHANGE_PROVIDER_URL` | URL da AwesomeAPI |
+| `EXCHANGE_CACHE_TTL_SECONDS` | `60` |
+| `EXCHANGE_REQUEST_TIMEOUT_SECONDS` | `5` |
+
+**Deployment:**
+
+| Campo | Valor |
+|---|---|
+| Imagem | `projetomicro/exchange:latest` |
+| Porta | `8080` |
+| CPU request/limit | `100m` / `500m` |
+| Memória request/limit | `128Mi` / `256Mi` |
+| `imagePullPolicy` | `Always` |
+
+**Service:** `ClusterIP` na porta `8080` — acessível internamente como `exchange:8080`.
+
+## Deploy
+
+O deploy é feito automaticamente pelo Jenkins após o build:
+
+```bash
+kubectl apply -f k8s/k8s.yaml
+```
+
+Para aplicar manualmente:
+
+```bash
+# PostgreSQL
+kubectl apply -f postgres-service/k8s/
+
+# Exchange
+kubectl apply -f exchange-service/k8s/k8s.yaml
+```
