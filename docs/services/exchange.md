@@ -117,5 +117,5 @@ O serviço consome a [AwesomeAPI](https://economia.awesomeapi.com.br) para obter
 
 [Assista ao vídeo de demonstração](https://youtu.be/Y97KsvTqPqk)
 
-<iframe width="100%" height="470" src="https://youtu.be/Y97KsvTqPqk" allowfullscreen></iframe>
+<iframe width="1030" height="579" src="https://www.youtube.com/embed/Y97KsvTqPqk" title="Exchange funcional" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
