@@ -112,3 +112,8 @@ flowchart TD
 ## Provedor externo
 
 O serviço consome a [AwesomeAPI](https://economia.awesomeapi.com.br) para obter cotações em tempo real. A URL do provedor é configurável via variável de ambiente, permitindo trocar a fonte sem alterar o código.
+
+# Vídeo funcionando
+
+[Assista ao vídeo de demonstração](https://youtu.be/Y97KsvTqPqk)
+
