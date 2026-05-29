@@ -2,7 +2,7 @@
 
 **Responsável** -> Vitor Fengler
 
-**Repositórios**:  [Repositório ptoduct](https://github.com/projeto-micro/product.git) e [Repositório ptoduct-service](https://github.com/projeto-micro/product-service.git) 
+**Repositórios**:  [Repositório product](https://github.com/projeto-micro/product.git) e [Repositório product-service](https://github.com/projeto-micro/product-service.git) 
 
 Serviço responsável pelo catálogo de produtos da loja.
 
