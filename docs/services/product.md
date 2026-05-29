@@ -119,4 +119,4 @@ CREATE TABLE products (
 
 # Vídeo funcionando
 
-[Assista ao vídeo de demonstração](https://youtu.be/tYpjB4pRFLc)
+<iframe width="1030" height="579" src="https://www.youtube.com/embed/tYpjB4pRFLc" title="Products funcional" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
