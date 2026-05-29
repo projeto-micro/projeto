@@ -116,3 +116,7 @@ CREATE TABLE products (
 - `name` não pode ser vazio
 - `price` não pode ser nulo nem negativo
 - `unit` não pode ser vazio
+
+# Vídeo funcionando
+
+[Assista ao vídeo de demonstração](https://youtu.be/tYpjB4pRFLc)
