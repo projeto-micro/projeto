@@ -24,3 +24,7 @@ O Gateway roteia `/orders/**` para o servico `order`. O servico recebe o `id-acc
 - Dockerfile: `api/order-service/Dockerfile`
 - Jenkinsfile: `api/order-service/Jenkinsfile`
 - Kubernetes: `api/order-service/k8s/k8s.yaml`
+
+# Vídeo funcionando
+
+[Assista ao vídeo de demonstração](https://youtu.be/LxrGv-C8UaA)
