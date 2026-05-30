@@ -172,3 +172,7 @@ kubectl get pods
 - O HPA depende de metricas de CPU no cluster. Se `kubectl get hpa` mostrar `unknown`, verificar se o Metrics Server esta instalado no EKS.
 - Em clusters pequenos, a escalabilidade pode ser limitada pela capacidade dos nodes.
 - Para a entrega, o mais importante e mostrar o teste de carga rodando e o HPA monitorando o `gateway`.
+
+# Video
+
+<iframe width="1030" height="579" src="https://www.youtube.com/embed/SNHtlA4VjYc" title="HPA teste" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
