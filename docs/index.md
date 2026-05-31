@@ -59,3 +59,8 @@ docker compose down -v
 - **JWT** — autenticação stateless
 - **Docker Compose** — orquestração local
 - **Prometheus + Grafana** — observabilidade
+
+
+# Link para o deploy do site
+
+[Site](http://a241110ed513842e0a5ac2ba4289486f-1307683198.sa-east-1.elb.amazonaws.com/login.html)
